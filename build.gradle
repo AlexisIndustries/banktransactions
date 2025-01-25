@@ -1,0 +1,54 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.2'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+ext {
+	springCloudVersion = "2024.0.0"
+}
+
+group = 'com.alexisindustries'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation libs.bundles.spring
+	implementation libs.mapstruct
+	implementation libs.sprindoc
+	implementation libs.liquibase
+	compileOnly libs.lombok
+	compileOnly libs.lombok.mapstruct
+	runtimeOnly libs.postgresql.driver
+	annotationProcessor libs.lombok
+	annotationProcessor libs.lombok.mapstruct
+	annotationProcessor libs.mapstruct.processor
+	testImplementation libs.spring.starter.test
+	testImplementation libs.bundles.mockito
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
