@@ -1,0 +1,29 @@
+services:
+  api:
+    build:
+      context: .
+    container_name: api
+    depends_on:
+      - db
+    environment:
+      - 'POSTGRES_DB_URL=jdbc:postgresql://db:5432/timetracker_database'
+      - 'POSTGRES_DB_USERNAME=postgres'
+      - 'POSTGRES_DB_PASSWORD=12345'
+    ports:
+      - 7890:7890
+
+  db:
+    image: postgres:16
+    container_name: db
+    restart: always
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=banktransactions
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=12345
+    ports:
+      - 5432:5432
+
+volumes:
+  postgres-data: { }
